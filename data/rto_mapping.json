@@ -1,0 +1,457 @@
+{
+  "description": "Configurable Indian Regional Transport Office (RTO) Prefix Database",
+  "version": "1.0.0",
+  "last_updated": "2026-09-17",
+  "records": [
+    {
+      "code": "MH-46",
+      "prefix": "MH46",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Panvel",
+      "district": "Raigad",
+      "region_zone": "Navi Mumbai / Raigad"
+    },
+    {
+      "code": "MH-08",
+      "prefix": "MH08",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Ratnagiri",
+      "district": "Ratnagiri",
+      "region_zone": "Konkan"
+    },
+    {
+      "code": "MH-01",
+      "prefix": "MH01",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Mumbai South (Tardeo)",
+      "district": "Mumbai City",
+      "region_zone": "Mumbai"
+    },
+    {
+      "code": "MH-02",
+      "prefix": "MH02",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Mumbai West (Andheri)",
+      "district": "Mumbai Suburban",
+      "region_zone": "Mumbai"
+    },
+    {
+      "code": "MH-03",
+      "prefix": "MH03",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Mumbai East (Wadala)",
+      "district": "Mumbai Suburban",
+      "region_zone": "Mumbai"
+    },
+    {
+      "code": "MH-04",
+      "prefix": "MH04",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Thane",
+      "district": "Thane",
+      "region_zone": "Konkan"
+    },
+    {
+      "code": "MH-05",
+      "prefix": "MH05",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Kalyan",
+      "district": "Thane",
+      "region_zone": "Konkan"
+    },
+    {
+      "code": "MH-06",
+      "prefix": "MH06",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Pen",
+      "district": "Raigad",
+      "region_zone": "Konkan"
+    },
+    {
+      "code": "MH-07",
+      "prefix": "MH07",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Sindhudurg",
+      "district": "Sindhudurg",
+      "region_zone": "Konkan"
+    },
+    {
+      "code": "MH-09",
+      "prefix": "MH09",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Kolhapur",
+      "district": "Kolhapur",
+      "region_zone": "Western Maharashtra"
+    },
+    {
+      "code": "MH-10",
+      "prefix": "MH10",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Sangli",
+      "district": "Sangli",
+      "region_zone": "Western Maharashtra"
+    },
+    {
+      "code": "MH-11",
+      "prefix": "MH11",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Satara",
+      "district": "Satara",
+      "region_zone": "Western Maharashtra"
+    },
+    {
+      "code": "MH-12",
+      "prefix": "MH12",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Pune",
+      "district": "Pune",
+      "region_zone": "Western Maharashtra"
+    },
+    {
+      "code": "MH-13",
+      "prefix": "MH13",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Solapur",
+      "district": "Solapur",
+      "region_zone": "Western Maharashtra"
+    },
+    {
+      "code": "MH-14",
+      "prefix": "MH14",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Pimpri-Chinchwad",
+      "district": "Pune",
+      "region_zone": "Western Maharashtra"
+    },
+    {
+      "code": "MH-15",
+      "prefix": "MH15",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Nashik",
+      "district": "Nashik",
+      "region_zone": "North Maharashtra"
+    },
+    {
+      "code": "MH-17",
+      "prefix": "MH17",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Shrirampur",
+      "district": "Ahmednagar",
+      "region_zone": "North Maharashtra"
+    },
+    {
+      "code": "MH-20",
+      "prefix": "MH20",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Chhatrapati Sambhajinagar (Aurangabad)",
+      "district": "Chhatrapati Sambhajinagar",
+      "region_zone": "Marathwada"
+    },
+    {
+      "code": "MH-31",
+      "prefix": "MH31",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Nagpur West",
+      "district": "Nagpur",
+      "region_zone": "Vidarbha"
+    },
+    {
+      "code": "MH-43",
+      "prefix": "MH43",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Navi Mumbai (Vashi)",
+      "district": "Thane",
+      "region_zone": "Mumbai Metropolitan Region"
+    },
+    {
+      "code": "MH-47",
+      "prefix": "MH47",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Mumbai North (Borivali)",
+      "district": "Mumbai Suburban",
+      "region_zone": "Mumbai"
+    },
+    {
+      "code": "MH-48",
+      "prefix": "MH48",
+      "state_code": "MH",
+      "state_name": "Maharashtra",
+      "location": "Vasai-Virar",
+      "district": "Palghar",
+      "region_zone": "Konkan"
+    },
+    {
+      "code": "DL-01",
+      "prefix": "DL01",
+      "state_code": "DL",
+      "state_name": "Delhi",
+      "location": "Delhi North (Mall Road)",
+      "district": "North Delhi",
+      "region_zone": "Delhi NCR"
+    },
+    {
+      "code": "DL-02",
+      "prefix": "DL02",
+      "state_code": "DL",
+      "state_name": "Delhi",
+      "location": "Delhi New Delhi (Tilak Marg)",
+      "district": "New Delhi",
+      "region_zone": "Delhi NCR"
+    },
+    {
+      "code": "DL-03",
+      "prefix": "DL03",
+      "state_code": "DL",
+      "state_name": "Delhi",
+      "location": "Delhi South (Sheikh Sarai)",
+      "district": "South Delhi",
+      "region_zone": "Delhi NCR"
+    },
+    {
+      "code": "DL-04",
+      "prefix": "DL04",
+      "state_code": "DL",
+      "state_name": "Delhi",
+      "location": "Delhi West (Janakpuri)",
+      "district": "West Delhi",
+      "region_zone": "Delhi NCR"
+    },
+    {
+      "code": "DL-08",
+      "prefix": "DL08",
+      "state_code": "DL",
+      "state_name": "Delhi",
+      "location": "Delhi North West (Wazirpur)",
+      "district": "North West Delhi",
+      "region_zone": "Delhi NCR"
+    },
+    {
+      "code": "KA-01",
+      "prefix": "KA01",
+      "state_code": "KA",
+      "state_name": "Karnataka",
+      "location": "Bangalore Central (Koramangala)",
+      "district": "Bangalore Urban",
+      "region_zone": "Karnataka"
+    },
+    {
+      "code": "KA-02",
+      "prefix": "KA02",
+      "state_code": "KA",
+      "state_name": "Karnataka",
+      "location": "Bangalore West (Rajajinagar)",
+      "district": "Bangalore Urban",
+      "region_zone": "Karnataka"
+    },
+    {
+      "code": "KA-03",
+      "prefix": "KA03",
+      "state_code": "KA",
+      "state_name": "Karnataka",
+      "location": "Bangalore East (Indiranagar)",
+      "district": "Bangalore Urban",
+      "region_zone": "Karnataka"
+    },
+    {
+      "code": "KA-04",
+      "prefix": "KA04",
+      "state_code": "KA",
+      "state_name": "Karnataka",
+      "location": "Bangalore North (Yeshwanthpur)",
+      "district": "Bangalore Urban",
+      "region_zone": "Karnataka"
+    },
+    {
+      "code": "KA-05",
+      "prefix": "KA05",
+      "state_code": "KA",
+      "state_name": "Karnataka",
+      "location": "Bangalore South (Jayanagar)",
+      "district": "Bangalore Urban",
+      "region_zone": "Karnataka"
+    },
+    {
+      "code": "KA-19",
+      "prefix": "KA19",
+      "state_code": "KA",
+      "state_name": "Karnataka",
+      "location": "Mangalore",
+      "district": "Dakshina Kannada",
+      "region_zone": "Coastal Karnataka"
+    },
+    {
+      "code": "TN-01",
+      "prefix": "TN01",
+      "state_code": "TN",
+      "state_name": "Tamil Nadu",
+      "location": "Chennai Central (Ayanavaram)",
+      "district": "Chennai",
+      "region_zone": "Chennai Metropolitan"
+    },
+    {
+      "code": "TN-02",
+      "prefix": "TN02",
+      "state_code": "TN",
+      "state_name": "Tamil Nadu",
+      "location": "Chennai North West (Anna Nagar)",
+      "district": "Chennai",
+      "region_zone": "Chennai Metropolitan"
+    },
+    {
+      "code": "TN-09",
+      "prefix": "TN09",
+      "state_code": "TN",
+      "state_name": "Tamil Nadu",
+      "location": "Chennai West (K.K. Nagar)",
+      "district": "Chennai",
+      "region_zone": "Chennai Metropolitan"
+    },
+    {
+      "code": "GJ-01",
+      "prefix": "GJ01",
+      "state_code": "GJ",
+      "state_name": "Gujarat",
+      "location": "Ahmedabad West (Subhash Bridge)",
+      "district": "Ahmedabad",
+      "region_zone": "Central Gujarat"
+    },
+    {
+      "code": "GJ-05",
+      "prefix": "GJ05",
+      "state_code": "GJ",
+      "state_name": "Gujarat",
+      "location": "Surat",
+      "district": "Surat",
+      "region_zone": "South Gujarat"
+    },
+    {
+      "code": "GJ-06",
+      "prefix": "GJ06",
+      "state_code": "GJ",
+      "state_name": "Gujarat",
+      "location": "Vadodara",
+      "district": "Vadodara",
+      "region_zone": "Central Gujarat"
+    },
+    {
+      "code": "UP-14",
+      "prefix": "UP14",
+      "state_code": "UP",
+      "state_name": "Uttar Pradesh",
+      "location": "Ghaziabad",
+      "district": "Ghaziabad",
+      "region_zone": "Western UP"
+    },
+    {
+      "code": "UP-16",
+      "prefix": "UP16",
+      "state_code": "UP",
+      "state_name": "Uttar Pradesh",
+      "location": "Gautam Buddha Nagar (Noida)",
+      "district": "Gautam Buddha Nagar",
+      "region_zone": "Western UP"
+    },
+    {
+      "code": "UP-32",
+      "prefix": "UP32",
+      "state_code": "UP",
+      "state_name": "Uttar Pradesh",
+      "location": "Lucknow (Transport Nagar)",
+      "district": "Lucknow",
+      "region_zone": "Central UP"
+    },
+    {
+      "code": "UP-78",
+      "prefix": "UP78",
+      "state_code": "UP",
+      "state_name": "Uttar Pradesh",
+      "location": "Kanpur Nagar",
+      "district": "Kanpur",
+      "region_zone": "Central UP"
+    },
+    {
+      "code": "RJ-14",
+      "prefix": "RJ14",
+      "state_code": "RJ",
+      "state_name": "Rajasthan",
+      "location": "Jaipur South",
+      "district": "Jaipur",
+      "region_zone": "Jaipur Region"
+    },
+    {
+      "code": "WB-01",
+      "prefix": "WB01",
+      "state_code": "WB",
+      "state_name": "West Bengal",
+      "location": "Kolkata (Beltala - Two Wheeler)",
+      "district": "Kolkata",
+      "region_zone": "Kolkata"
+    },
+    {
+      "code": "WB-02",
+      "prefix": "WB02",
+      "state_code": "WB",
+      "state_name": "West Bengal",
+      "location": "Kolkata (Beltala - Four Wheeler)",
+      "district": "Kolkata",
+      "region_zone": "Kolkata"
+    },
+    {
+      "code": "TS-07",
+      "prefix": "TS07",
+      "state_code": "TS",
+      "state_name": "Telangana",
+      "location": "Ranga Reddy (Attapur)",
+      "district": "Ranga Reddy",
+      "region_zone": "Hyderabad Region"
+    },
+    {
+      "code": "TS-09",
+      "prefix": "TS09",
+      "state_code": "TS",
+      "state_name": "Telangana",
+      "location": "Hyderabad Central (Khairatabad)",
+      "district": "Hyderabad",
+      "region_zone": "Hyderabad Region"
+    },
+    {
+      "code": "AP-39",
+      "prefix": "AP39",
+      "state_code": "AP",
+      "state_name": "Andhra Pradesh",
+      "location": "Visakhapatnam",
+      "district": "Visakhapatnam",
+      "region_zone": "Coastal Andhra"
+    },
+    {
+      "code": "HR-26",
+      "prefix": "HR26",
+      "state_code": "HR",
+      "state_name": "Haryana",
+      "location": "Gurgaon (North)",
+      "district": "Gurugram",
+      "region_zone": "Haryana NCR"
+    }
+  ]
+}
