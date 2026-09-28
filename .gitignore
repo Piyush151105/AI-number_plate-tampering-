@@ -16,3 +16,4 @@ outputs/
 data/raw/
 models/weights/*.pt
 models/weights/*.pth
+data/
