@@ -231,8 +231,9 @@ async def check_challan(request: ChallanCheckRequest, req: Request):
     Queries the decoupled provider (Mock or Authorized) with safe error shielding.
     """
     client_ip = req.client.host if req.client else "127.0.0.1"
+    clean_v_num = request.vehicleNumber.strip().upper()
     success_resp, err_resp, status_code = await challan_service_provider.check(
-        vehicle_number=request.vehicleNumber,
+        vehicle_number=clean_v_num,
         client_id=client_ip,
     )
     if err_resp is not None:
@@ -246,8 +247,9 @@ def get_challan(
     is_tampered: bool = False,
     tamper_verdict: str = "",
 ) -> ChallanSummaryResponse:
+    clean_plate = plate_number.strip().upper()
     summary = challan_service.lookup(
-        plate_number=plate_number,
+        plate_number=clean_plate,
         is_tampered=is_tampered,
         tamper_verdict=tamper_verdict,
     )
@@ -283,11 +285,12 @@ class PaymentRequest(BaseModel):
 
 @app.post("/api/challan/pay")
 def pay_challan(payload: PaymentRequest) -> dict:
-    challan_service.pay_challans(payload.plate_number, payload.challan_nos)
-    summary = challan_service.lookup(payload.plate_number)
+    clean_plate = payload.plate_number.strip().upper()
+    challan_service.pay_challans(clean_plate, payload.challan_nos)
+    summary = challan_service.lookup(clean_plate)
     return {
         "status": "success",
-        "message": f"Challans for {payload.plate_number} settled.",
+        "message": f"Challans for {clean_plate} settled.",
         "unpaid_challans": summary.unpaid_challans,
         "total_due": summary.total_due,
     }
@@ -295,11 +298,12 @@ def pay_challan(payload: PaymentRequest) -> dict:
 
 @app.post("/api/challan/reset")
 def reset_challan(payload: PaymentRequest) -> dict:
-    challan_service.reset_challans(payload.plate_number)
-    summary = challan_service.lookup(payload.plate_number)
+    clean_plate = payload.plate_number.strip().upper()
+    challan_service.reset_challans(clean_plate)
+    summary = challan_service.lookup(clean_plate)
     return {
         "status": "success",
-        "message": f"Challans for {payload.plate_number} reset to unpaid.",
+        "message": f"Challans for {clean_plate} reset to unpaid.",
         "unpaid_challans": summary.unpaid_challans,
         "total_due": summary.total_due,
     }
@@ -393,8 +397,9 @@ def predict_missing_plate_characters(payload: PlatePredictionRequest) -> PlatePr
     Predict missing characters in a partial Indian vehicle registration number using
     RTO geography mapping, series constraints, and probabilistic ML matching.
     """
+    clean_partial = payload.partial_plate.strip().upper()
     result = rto_predictor.predict(
-        partial_plate=payload.partial_plate,
+        partial_plate=clean_partial,
         top_k=payload.top_k,
         target_category=payload.target_category,
     )
@@ -404,9 +409,10 @@ def predict_missing_plate_characters(payload: PlatePredictionRequest) -> PlatePr
 @app.get("/api/rto-predictor/rto-info/{rto_code}", response_model=RTOAreaConstraintResponse)
 def get_rto_constraint_info(rto_code: str) -> RTOAreaConstraintResponse:
     """Get local RTO area details and vehicle series constraints."""
-    constraint = rto_predictor.get_rto_constraint(rto_code)
+    clean_rto = rto_code.strip().upper()
+    constraint = rto_predictor.get_rto_constraint(clean_rto)
     if not constraint:
-        raise HTTPException(status_code=404, detail=f"RTO constraint for '{rto_code}' not found.")
+        raise HTTPException(status_code=404, detail=f"RTO constraint for '{clean_rto}' not found.")
     return RTOAreaConstraintResponse(
         rto_code=constraint.rto_code,
         prefix=constraint.prefix,
@@ -424,9 +430,10 @@ def get_rto_constraint_info(rto_code: str) -> RTOAreaConstraintResponse:
 @app.get("/api/rto/{prefix_or_code}", response_model=RTOResponse)
 def get_rto_details(prefix_or_code: str) -> RTOResponse:
     """Lookup configurable RTO location details (e.g. MH-46 -> Panvel, MH-08 -> Ratnagiri)."""
-    res = rto_service.lookup(prefix_or_code)
+    clean_prefix = prefix_or_code.strip().upper()
+    res = rto_service.lookup(clean_prefix)
     if not res:
-        raise HTTPException(status_code=404, detail=f"RTO code/prefix '{prefix_or_code}' not found.")
+        raise HTTPException(status_code=404, detail=f"RTO code/prefix '{clean_prefix}' not found.")
     return RTOResponse(
         prefix=res.prefix,
         code=res.code,

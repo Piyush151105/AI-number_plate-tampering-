@@ -560,7 +560,7 @@ class RTOMissingCharacterPredictor:
         Returns:
             PlatePredictionResult with top complete plate candidates and match confidence scores.
         """
-        raw_input = (partial_plate or "").strip()
+        raw_input = (partial_plate or "").strip().upper()
         if not raw_input:
             return PlatePredictionResult(
                 input_pattern="",

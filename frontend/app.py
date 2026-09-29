@@ -39,6 +39,48 @@ if "prediction_result" not in st.session_state:
     st.session_state.prediction_result = None
 if "prediction_input_text" not in st.session_state:
     st.session_state.prediction_input_text = "MH 46 B* 161*"
+if "prediction_input_text_widget" not in st.session_state:
+    st.session_state.prediction_input_text_widget = "MH 46 B* 161*"
+if "tab2_manual_plate_box" not in st.session_state:
+    st.session_state.tab2_manual_plate_box = "MH46BW1612"
+
+# Force all search and type boxes to ALWAYS display in UPPERCASE
+st.markdown(
+    """
+    <style>
+    /* Always display text in search & input boxes as uppercase */
+    div[data-testid="stTextInput"] input,
+    input[type="text"],
+    input[type="search"],
+    .stTextInput input {
+        text-transform: uppercase !important;
+    }
+    /* Preserve normal URL casing for the backend connection setting in sidebar */
+    div[data-testid="stSidebar"] input {
+        text-transform: none !important;
+    }
+    /* Completely hide Streamlit's default 'Press Enter to submit form' instruction prompt */
+    [data-testid="InputInstructions"],
+    div[data-testid="InputInstructions"],
+    span[data-testid="InputInstructions"],
+    .stTextInput [data-testid="InputInstructions"],
+    .stForm [data-testid="InputInstructions"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+        overflow: hidden !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+def to_uppercase(key: str) -> None:
+    """Ensure widget input stored in session state is always uppercase."""
+    if key in st.session_state and isinstance(st.session_state[key], str):
+        st.session_state[key] = st.session_state[key].upper()
+
 
 st.title("AI-Enabled Vehicle Number Plate Tampering & e-Challan Verification")
 st.caption("Computer Vision · Deep Learning Forensics · e-Challan Integration")
@@ -62,8 +104,6 @@ with st.sidebar:
         4. **e-Challan Integration**: Standardized `POST /api/challan/check` via decoupled provider adapter
         """
     )
-    st.divider()
-    st.caption("Current Provider Mode: `CHALLAN_PROVIDER=mock`")
 
 
 def render_challan_display(data: dict, current_plate_num: str = "") -> None:
@@ -115,26 +155,11 @@ def render_challan_display(data: dict, current_plate_num: str = "") -> None:
         unsafe_allow_html=True,
     )
 
-    # Informative warning if live lookup had to fall back to demo mode
-    if warning:
+    # Informative warning if live lookup had to fall back
+    if warning and "demo" not in warning.lower():
         st.warning(f"⚠️ {warning}")
 
-    # Mode Indicator: Show Demo Mode banner ONLY when source == "demo"
-    if source == "demo":
-        st.markdown(
-            """
-            <div style="background: rgba(52, 152, 219, 0.08); border: 1px solid #3182ce; border-radius: 8px; padding: 12px 16px; margin-bottom: 14px;">
-                <div style="font-weight: bold; color: #63b3ed; font-size: 14px; display: flex; align-items: center; gap: 6px;">
-                    <span>ℹ️</span> <span>Demo Mode</span>
-                </div>
-                <div style="font-size: 13px; color: #e2e8f0; margin-top: 3px;">
-                    Sample data only. These challan results are sample demonstration data and are not real vehicle records.
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    elif source == "live":
+    if source == "live":
         provider_name = os.getenv("CHALLAN_PROVIDER_NAME", "Third-Party Provider").strip() or "Third-Party Provider"
         st.markdown(
             f"""
@@ -458,6 +483,8 @@ with tab_upload:
                 st.session_state.detection_data = None
                 st.session_state.challan_check_result = None
                 st.session_state.current_file_name = uploaded.name
+                if "ocr_confirmed_plate_input" in st.session_state:
+                    del st.session_state["ocr_confirmed_plate_input"]
 
     with col2:
         st.subheader("2. Detection & e-Challan Verification")
@@ -492,29 +519,31 @@ with tab_upload:
             # ------------------------------------------------------------------
             st.write("---")
             st.write("#### Detected Vehicle Number")
-            plate_input_col, check_btn_col = st.columns([2, 1])
+            with st.form(key="tab1_ocr_check_form", border=False):
+                plate_input_col, check_btn_col = st.columns([2, 1])
 
-            with plate_input_col:
-                confirmed_plate = st.text_input(
-                    "Confirm or Edit Vehicle Registration Number",
-                    value=detected_text,
-                    help="Verify or edit the registration number before running e-Challan check",
-                    key="ocr_confirmed_plate_input",
-                )
+                with plate_input_col:
+                    confirmed_plate = st.text_input(
+                        "Confirm or Edit Vehicle Registration Number",
+                        value=(detected_text or "").upper(),
+                        help="Verify or edit the registration number before running e-Challan check",
+                        key="ocr_confirmed_plate_input",
+                    )
 
-            with check_btn_col:
-                st.write("")
-                st.write("")
-                check_challan_clicked = st.button("🔍 Check e-Challan", type="primary", use_container_width=True)
+                with check_btn_col:
+                    st.write("")
+                    st.write("")
+                    check_challan_clicked = st.form_submit_button("🔍 Check e-Challan", type="primary", use_container_width=True)
 
             if check_challan_clicked:
-                clean_num = confirmed_plate.strip()
+                clean_num = confirmed_plate.strip().upper()
                 if not clean_num:
                     st.error("Please enter a valid vehicle registration number.")
                 else:
                     with st.spinner("Checking e-Challan records..."):
                         try:
                             st.session_state.challan_check_result = challan_service.get_challans(clean_num)
+                            st.session_state.ocr_searched_plate = clean_num
                         except ValueError as val_err:
                             st.error(f"⚠️ {val_err}")
                         except Exception as exc:
@@ -523,7 +552,8 @@ with tab_upload:
             # Display e-Challan Results
             if st.session_state.challan_check_result:
                 st.write("---")
-                render_challan_display(st.session_state.challan_check_result, current_plate_num=confirmed_plate)
+                curr_plate = st.session_state.get("ocr_searched_plate", confirmed_plate.strip().upper())
+                render_challan_display(st.session_state.challan_check_result, current_plate_num=curr_plate)
 
             st.write("---")
             st.write(f"**Format Status:** {data['format_message']}")
@@ -549,34 +579,36 @@ with tab_manual:
     st.subheader("Direct e-Challan Check by Vehicle Number")
     st.write("Verify traffic citations directly by entering any Indian vehicle registration number.")
 
-    m_col1, m_col2 = st.columns([2, 1])
-    with m_col1:
-        manual_plate_input = st.text_input(
-            "Enter Vehicle Number (e.g. MH46BW1612, DL2SKA2187, KA01AB1234)",
-            value="MH46BW1612",
-            key="tab2_manual_plate_box",
-        )
-    with m_col2:
-        st.write("")
-        st.write("")
-        manual_check_btn = st.button("🔍 Check e-Challan", type="primary", use_container_width=True, key="manual_check_btn")
+    with st.form(key="tab2_manual_search_form", border=False):
+        m_col1, m_col2 = st.columns([2, 1])
+        with m_col1:
+            manual_plate_input = st.text_input(
+                "Enter Vehicle Number (e.g. MH46BW1612, DL2SKA2187, KA01AB1234)",
+                key="tab2_manual_plate_box",
+                help="Enter Indian vehicle registration number (e.g. MH46BW1612)",
+            )
+        with m_col2:
+            st.write("")
+            st.write("")
+            manual_check_btn = st.form_submit_button("🔍 Check e-Challan", type="primary", use_container_width=True)
 
-    if manual_check_btn or st.session_state.manual_challan_result:
-        if manual_check_btn:
-            clean_manual = manual_plate_input.strip()
-            if not clean_manual:
-                st.error("Please enter a valid vehicle registration number.")
-            else:
-                with st.spinner("Checking e-Challan records..."):
-                    try:
-                        st.session_state.manual_challan_result = challan_service.get_challans(clean_manual)
-                    except ValueError as val_err:
-                        st.error(f"⚠️ {val_err}")
-                    except Exception as err:
-                        st.error(f"⚠️ Service request failed: {err}")
+    if manual_check_btn:
+        clean_manual = manual_plate_input.strip().upper()
+        if not clean_manual:
+            st.error("Please enter a valid vehicle registration number.")
+        else:
+            with st.spinner("Checking e-Challan records..."):
+                try:
+                    st.session_state.manual_challan_result = challan_service.get_challans(clean_manual)
+                    st.session_state.manual_searched_plate = clean_manual
+                except ValueError as val_err:
+                    st.error(f"⚠️ {val_err}")
+                except Exception as err:
+                    st.error(f"⚠️ Service request failed: {err}")
 
-        if st.session_state.manual_challan_result:
-            render_challan_display(st.session_state.manual_challan_result, current_plate_num=manual_plate_input)
+    if st.session_state.manual_challan_result:
+        curr_manual_plate = st.session_state.get("manual_searched_plate", manual_plate_input.strip().upper())
+        render_challan_display(st.session_state.manual_challan_result, current_plate_num=curr_manual_plate)
 
 
 # ==============================================================================
@@ -596,52 +628,67 @@ with tab_predictor:
     with p_col1:
         if st.button("📍 MH 46 B* 161*", use_container_width=True, help="Panvel RTO: missing series letter and last digit"):
             st.session_state.prediction_input_text = "MH 46 B* 161*"
+            st.session_state.prediction_input_text_widget = "MH 46 B* 161*"
+            st.session_state.prediction_auto_run = True
             st.session_state.prediction_result = None
+            st.rerun()
     with p_col2:
         if st.button("📍 MH 46 ** 1612", use_container_width=True, help="Panvel RTO: missing two-letter series"):
             st.session_state.prediction_input_text = "MH 46 ** 1612"
+            st.session_state.prediction_input_text_widget = "MH 46 ** 1612"
+            st.session_state.prediction_auto_run = True
             st.session_state.prediction_result = None
+            st.rerun()
     with p_col3:
         if st.button("📍 MH 08 A* 1400", use_container_width=True, help="Ratnagiri RTO: missing series letter"):
             st.session_state.prediction_input_text = "MH 08 A* 1400"
+            st.session_state.prediction_input_text_widget = "MH 08 A* 1400"
+            st.session_state.prediction_auto_run = True
             st.session_state.prediction_result = None
+            st.rerun()
     with p_col4:
         if st.button("📍 DL 01 C* 5678", use_container_width=True, help="Delhi Mall Road RTO: 4-wheeler series"):
             st.session_state.prediction_input_text = "DL 01 C* 5678"
+            st.session_state.prediction_input_text_widget = "DL 01 C* 5678"
+            st.session_state.prediction_auto_run = True
             st.session_state.prediction_result = None
+            st.rerun()
     with p_col5:
         if st.button("📍 KA 03 M* 9999", use_container_width=True, help="Bangalore East RTO: 2-wheeler series"):
             st.session_state.prediction_input_text = "KA 03 M* 9999"
+            st.session_state.prediction_input_text_widget = "KA 03 M* 9999"
+            st.session_state.prediction_auto_run = True
             st.session_state.prediction_result = None
+            st.rerun()
 
-    input_col, run_col = st.columns([3, 1])
-    with input_col:
-        pred_text_input = st.text_input(
-            "Partial Indian Vehicle Registration Number (use '*' or '?' for missing slots)",
-            value=st.session_state.prediction_input_text,
-            key="prediction_input_text_widget",
-            help="Enter partial plate with wildcards, e.g. 'MH 46 B* 161*' or 'MH 46 ** 1612'",
-        )
-    with run_col:
-        st.write("")
-        st.write("")
-        run_pred_btn = st.button("🔮 Predict Missing Characters", type="primary", use_container_width=True, key="run_predictor_btn")
+    with st.form(key="tab3_prediction_form", border=False):
+        input_col, run_col = st.columns([3, 1])
+        with input_col:
+            pred_text_input = st.text_input(
+                "Partial Indian Vehicle Registration Number (use '*' or '?' for missing slots)",
+                key="prediction_input_text_widget",
+                help="Enter partial plate with wildcards (e.g. 'MH 46 B* 161*' or 'MH 46 ** 1612')",
+            )
+        with run_col:
+            st.write("")
+            st.write("")
+            run_pred_btn = st.form_submit_button("🔮 Predict Missing Characters", type="primary", use_container_width=True)
 
-    filter_col1, filter_col2 = st.columns([1.8, 1.2])
-    with filter_col1:
-        top_k_slider = st.slider("Max Candidates to Return", min_value=3, max_value=20, value=10, step=1)
-    with filter_col2:
-        category_filter = st.selectbox(
-            "Vehicle Category Filter",
-            options=[
-                "All Categories (Auto-Detect Truth)",
-                "🚗 Four-Wheeler (Car / LMV)",
-                "🛵 Two-Wheeler (Motorcycle / Scooter)",
-                "🚕 Commercial / Transport",
-            ],
-            index=0,
-            help="Filter predictions by vehicle type or let the system auto-detect ground truth.",
-        )
+        filter_col1, filter_col2 = st.columns([1.8, 1.2])
+        with filter_col1:
+            top_k_slider = st.slider("Max Candidates to Return", min_value=3, max_value=20, value=10, step=1)
+        with filter_col2:
+            category_filter = st.selectbox(
+                "Vehicle Category Filter",
+                options=[
+                    "All Categories (Auto-Detect Truth)",
+                    "🚗 Four-Wheeler (Car / LMV)",
+                    "🛵 Two-Wheeler (Motorcycle / Scooter)",
+                    "🚕 Commercial / Transport",
+                ],
+                index=0,
+                help="Filter predictions by vehicle type or let the system auto-detect ground truth.",
+            )
 
     target_cat_param = None
     if "Four-Wheeler" in category_filter:
@@ -651,9 +698,10 @@ with tab_predictor:
     elif "Commercial" in category_filter:
         target_cat_param = "Commercial"
 
-    if run_pred_btn or st.session_state.prediction_result is not None:
-        if run_pred_btn:
-            clean_input = pred_text_input.strip()
+    auto_run = st.session_state.pop("prediction_auto_run", False)
+    if run_pred_btn or auto_run or st.session_state.prediction_result is not None:
+        if run_pred_btn or auto_run:
+            clean_input = pred_text_input.strip().upper()
             if not clean_input:
                 st.error("Please provide a partial plate string to predict.")
             else:
